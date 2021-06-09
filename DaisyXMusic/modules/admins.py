@@ -16,15 +16,15 @@
 
 
 from asyncio.queues import QueueEmpty
-from DaisyXMusic.config import que
+from Pmusic.config import que
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
-from DaisyXMusic.function.admins import set
-from DaisyXMusic.helpers.channelmusic import get_chat_id
-from DaisyXMusic.helpers.decorators import authorized_users_only, errors
-from DaisyXMusic.helpers.filters import command, other_filters
-from DaisyXMusic.services.callsmusic import callsmusic
+from Pmusic.function.admins import set
+from Pmusic.helpers.channelmusic import get_chat_id
+from Pmusic.helpers.decorators import authorized_users_only, errors
+from Pmusic.helpers.filters import command, other_filters
+from Pmusic.services.callsmusic import callsmusic
 
 
 @Client.on_message(filters.command("adminreset"))
@@ -48,7 +48,7 @@ async def pause(_, message: Message):
     if (chat_id not in callsmusic.pytgcalls.active_calls) or (
         callsmusic.pytgcalls.active_calls[chat_id] == "paused"
     ):
-        await message.reply_text("❗ Nothing is playing!")
+        await message.reply_text("❗Tidak ada musik!")
     else:
         callsmusic.pytgcalls.pause_stream(chat_id)
         await message.reply_text("▶️ Paused!")
@@ -62,7 +62,7 @@ async def resume(_, message: Message):
     if (chat_id not in callsmusic.pytgcalls.active_calls) or (
         callsmusic.pytgcalls.active_calls[chat_id] == "playing"
     ):
-        await message.reply_text("❗ Nothing is paused!")
+        await message.reply_text("❗ Sedang di pause!")
     else:
         callsmusic.pytgcalls.resume_stream(chat_id)
         await message.reply_text("⏸ Resumed!")
@@ -74,7 +74,7 @@ async def resume(_, message: Message):
 async def stop(_, message: Message):
     chat_id = get_chat_id(message.chat)
     if chat_id not in callsmusic.pytgcalls.active_calls:
-        await message.reply_text("❗ Nothing is streaming!")
+        await message.reply_text("❗ Tidak ada streaming!")
     else:
         try:
             callsmusic.queues.clear(chat_id)
@@ -82,7 +82,7 @@ async def stop(_, message: Message):
             pass
 
         callsmusic.pytgcalls.leave_group_call(chat_id)
-        await message.reply_text("❌ Stopped streaming!")
+        await message.reply_text("❌ Stop streaming!")
 
 
 @Client.on_message(command("skip") & other_filters)
@@ -92,7 +92,7 @@ async def skip(_, message: Message):
     global que
     chat_id = get_chat_id(message.chat)
     if chat_id not in callsmusic.pytgcalls.active_calls:
-        await message.reply_text("❗ Nothing is playing to skip!")
+        await message.reply_text("❗ Tidak ada musik yang untuk di skip!")
     else:
         callsmusic.queues.task_done(chat_id)
 
@@ -108,7 +108,7 @@ async def skip(_, message: Message):
         skip = qeue.pop(0)
     if not qeue:
         return
-    await message.reply_text(f"- Skipped **{skip[0]}**\n- Now Playing **{qeue[0][0]}**")
+    await message.reply_text(f"- Skip **{skip[0]}**\n- Sedang di putar **{qeue[0][0]}**")
 
 
 @Client.on_message(filters.command("admincache"))
