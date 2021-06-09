@@ -32,29 +32,29 @@ from pyrogram.types import Voice
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from Python_ARQ import ARQ
 from youtube_search import YoutubeSearch
-from DaisyXMusic.modules.play import generate_cover
-from DaisyXMusic.modules.play import arq
-from DaisyXMusic.modules.play import cb_admin_check
-from DaisyXMusic.modules.play import transcode
+from Pmusic.modules.play import generate_cover
+from Pmusic.modules.play import arq
+from Pmusic.modules.play import cb_admin_check
+from Pmusic.modules.play import transcode
 from DaisyXMusic.modules.play import convert_seconds
-from DaisyXMusic.modules.play import time_to_seconds
-from DaisyXMusic.modules.play import changeImageSize
-from DaisyXMusic.config import BOT_NAME as bn
-from DaisyXMusic.config import DURATION_LIMIT
-from DaisyXMusic.config import UPDATES_CHANNEL as updateschannel
-from DaisyXMusic.config import que
-from DaisyXMusic.function.admins import admins as a
-from DaisyXMusic.helpers.errors import DurationLimitError
-from DaisyXMusic.helpers.decorators import errors
-from DaisyXMusic.helpers.admins import get_administrators
-from DaisyXMusic.helpers.channelmusic import get_chat_id
-from DaisyXMusic.helpers.decorators import authorized_users_only
-from DaisyXMusic.helpers.filters import command, other_filters
-from DaisyXMusic.helpers.gets import get_file_name
-from DaisyXMusic.services.callsmusic import callsmusic, queues
-from DaisyXMusic.services.callsmusic.callsmusic import client as USER
-from DaisyXMusic.services.converter.converter import convert
-from DaisyXMusic.services.downloaders import youtube
+from Pmusic.modules.play import time_to_seconds
+from Pmusic.modules.play import changeImageSize
+from Pmusic.config import BOT_NAME as bn
+from Pmusic.config import DURATION_LIMIT
+from Pmusic.config import UPDATES_CHANNEL as updateschannel
+from Pmusic.config import que
+from Pmusic.function.admins import admins as a
+from Pmusic.helpers.errors import DurationLimitError
+from Pmusic.helpers.decorators import errors
+from Pmusic.helpers.admins import get_administrators
+from Pmusic.helpers.channelmusic import get_chat_id
+from Pmusic.helpers.decorators import authorized_users_only
+from Pmusic.helpers.filters import command, other_filters
+from Pmusic.helpers.gets import get_file_name
+from Pmusic.services.callsmusic import callsmusic, queues
+from Pmusic.services.callsmusic.callsmusic import client as USER
+from Pmusic.services.converter.converter import convert
+from Pmusic.services.downloaders import youtube
 
 chat_id = None
 
@@ -77,7 +77,7 @@ async def playlist(client, message):
         temp.append(t)
     now_playing = temp[0][0]
     by = temp[0][1].mention(style="md")
-    msg = "**Now Playing** in {}".format(lel.linked_chat.title)
+    msg = "**Sedang di putar** in {}".format(lel.linked_chat.title)
     msg += "\n- " + now_playing
     msg += "\n- Req by " + by
     temp.pop(0)
@@ -103,7 +103,7 @@ def updated_stats(chat, queue, vol=100):
             stats += "\n\n"
             stats += "Volume : {}%\n".format(vol)
             stats += "Songs in queue : `{}`\n".format(len(que))
-            stats += "Now Playing : **{}**\n".format(queue[0][0])
+            stats += "Sedang di putar : **{}**\n".format(queue[0][0])
             stats += "Requested by : {}".format(queue[0][1].mention)
     else:
         stats = None
@@ -126,7 +126,7 @@ def r_ply(type_):
             [
                 InlineKeyboardButton("Playlist 📖", "cplaylist"),
             ],
-            [InlineKeyboardButton("❌ Close", "ccls")],
+            [InlineKeyboardButton("❌ Tutup", "ccls")],
         ]
     )
     return mar
@@ -195,7 +195,7 @@ async def p_cb(b, cb):
             temp.append(t)
         now_playing = temp[0][0]
         by = temp[0][1].mention(style="md")
-        msg = "**Now Playing** in {}".format(conv.title)
+        msg = "**Sedang di putar** in {}".format(conv.title)
         msg += "\n- " + now_playing
         msg += "\n- Req by " + by
         temp.pop(0)
@@ -270,7 +270,7 @@ async def m_cb(b, cb):
             temp.append(t)
         now_playing = temp[0][0]
         by = temp[0][1].mention(style="md")
-        msg = "**Now Playing** in {}".format(cb.message.chat.title)
+        msg = "**Sedang di putar** in {}".format(cb.message.chat.title)
         msg += "\n- " + now_playing
         msg += "\n- Req by " + by
         temp.pop(0)
@@ -319,7 +319,7 @@ async def m_cb(b, cb):
                 [
                     InlineKeyboardButton("Playlist 📖", "cplaylist"),
                 ],
-                [InlineKeyboardButton("❌ Close", "ccls")],
+                [InlineKeyboardButton("❌ Tutup", "ccls")],
             ]
         )
         await cb.message.edit(stats, reply_markup=marr)
